@@ -1,0 +1,11 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  - repo: https://github.com/jackdewinter/pymarkdown
+    rev: v0.9.11
+    hooks:
+      - id: pymarkdown
+        args:
+          - -d line-length,no-bare-urls,no-duplicate-heading,no-duplicate-header
+          - scan
