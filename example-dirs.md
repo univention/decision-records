@@ -1,6 +1,6 @@
 # Example directory structure (in alph. order)
 
-```
+```text
 /apps/gsuite
 /apps/office365
 /apps/open-xchange

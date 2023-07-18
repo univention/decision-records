@@ -106,14 +106,14 @@ E2E testing in UCS.
 
 ## More Information
 
-* Supported browsers:
-  * playwright[¹]:
+- Supported browsers:
+  - playwright[¹]:
     chromium, Chrome, Chrome-beta, Msedge, Msedge-beta, Msedge-dev, Firefox, Webkit
-  * selenium[²]: Chrome, Edge, Firefox, Internet Explorer, Safari
+  - selenium[²]: Chrome, Edge, Firefox, Internet Explorer, Safari
 
-* https://playwright.dev/python/
-* https://www.cypress.io/
-* https://www.selenium.dev/
+- https://playwright.dev/python/
+- https://www.cypress.io/
+- https://www.selenium.dev/
 
 [¹]: from `playwright install --help` of version 1.30.0
 
