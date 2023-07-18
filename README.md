@@ -14,6 +14,7 @@ For records about internal decisions see the private repository [univention/inte
 - Top level directories should be products or concerns, not teams.
 - Cross-cutting concerns (e.g. logging, security, deployment) may be found at higher levels than affected software.
 - Please do not add more than one level of subdirectories.
+- Here is an [example directory structure](example-dirs.md). It's just an example - you and your team know best. 
 
 ## Editing
 
