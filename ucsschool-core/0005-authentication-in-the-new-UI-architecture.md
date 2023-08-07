@@ -11,7 +11,7 @@
 
 ## Context and Problem Statement
 
-In our new UI architecture ([ADR 0001 change-ui-architecture](0001-change-ui-architecture.md)) the UI component (JavaScript running in the endusers browser, [ADR 0002 js-framework](0002-js-framework.md)) will have to present an authentication token to the Rankine API ([ADR 0003 use-rest-service-dedicated-to-ui](0003-use-rest-service-dedicated-to-ui.md)).
+In our new UI architecture ([ADR 0001 new-ui-architecture](0001-new-ui-architecture.md)) the UI component (JavaScript running in the endusers browser, [ADR 0002 js-framework](0002-js-framework.md)) will have to present an authentication token to the Rankine API ([ADR 0003 rest-service-dedicated-to-ui](0003-rest-service-dedicated-to-ui.md)).
 
 ## Decision Drivers
 
@@ -47,7 +47,7 @@ Chosen option: "Keycloak", because
 
 Links to related decisions and resources:
 
-- [ADR 0001 change-ui-architecture](0001-change-ui-architecture.md)
+- [ADR 0001 new-ui-architecture](0001-new-ui-architecture.md)
 - [ADR 0002 js-framework](0002-js-framework.md)
 - [ADR 0003 rest-service-dedicated-to-ui](0003-rest-service-dedicated-to-ui.md)
 - [Keycloak](https://www.keycloak.org/)

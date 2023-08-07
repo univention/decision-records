@@ -46,7 +46,7 @@ on to the Policy Evaluation component.
 
 ---
 
-The architecture of the Guardian should follow [ADR 0014](0014-component-deployments.md) and should ensure
+The architecture of the Guardian should follow [ADR 0014](../../ucsschool-core/0014-component-deployments.md) and should ensure
 maximum flexibility, scalability and separation of concerns.
 
 ## Decision Drivers
@@ -55,7 +55,7 @@ maximum flexibility, scalability and separation of concerns.
 - suitability for Kubernetes environments
 - scalability
 - compatibility with our UCS concepts
-- Adhering to [ADR 0014](0014-component-deployments.md)
+- Adhering to [ADR 0014](../../ucsschool-core/0014-component-deployments.md)
 
 ## Considered Options
 

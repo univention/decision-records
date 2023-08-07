@@ -14,7 +14,7 @@
 - We want to replace the old "Dojo Toolkit" JavaScript UI framework with a modern UI framework.
 - In its current version it makes a lot of work to improve accessibility aspects.
 - It is also not a very popular amongst frontend developers, which makes current employees unhappy and recruitment difficult.
-- The new JS framework will have to implement the architecture decided upon in [ADR 0001 change-ui-architecture](0001-change-ui-architecture.md):
+- The new JS framework will have to implement the architecture decided upon in [ADR 0001 new-ui-architecture](0001-new-ui-architecture.md):
   Instead of communicating with a UMC Python backend, it'll call REST APIs.
 
 ## Decision Drivers
@@ -54,7 +54,7 @@ projects which would make development and consistency between the implementation
 
 Links to related decisions and resources:
 
-- [ADR 0001 change-ui-architecture](0001-change-ui-architecture.md)
+- [ADR 0001 new-ui-architecture](0001-new-ui-architecture.md)
 - [ADR 0003 rest-service-dedicated-to-ui](0003-rest-service-dedicated-to-ui.md)
 - [Epic "Widget library for portal modules"](https://git.knut.univention.de/groups/univention/-/epics/262)
 - [Epic "Create UI Design for (UCS@school) portal modules"](https://git.knut.univention.de/groups/univention/-/epics/261)

@@ -11,7 +11,7 @@
 
 ## Context and Problem Statement
 
-In  [ADR 0001 change-ui-architecture](0001-change-ui-architecture.md) we decided for an architecture where the JavaScript frontend gets data from REST APIs.
+In  [ADR 0001 new-ui-architecture](0001-new-ui-architecture.md) we decided for an architecture where the JavaScript frontend gets data from REST APIs.
 
 Existing REST APIs for UCS@school domain objects lack required information:
 
@@ -78,7 +78,7 @@ Access to the Rankine API must be authenticated by an external service (see [ADR
 
 Links to related decisions and resources:
 
-- [ADR 0001 change-ui-architecture](0001-change-ui-architecture.md)
+- [ADR 0001 new-ui-architecture](0001-new-ui-architecture.md)
 - [ADR 0002 js-framework](0002-js-framework.md)
 - [Epic "BFF for school portal modules"](https://git.knut.univention.de/groups/univention/-/epics/279)
 - [Configuration database for distributed Systems](https://git.knut.univention.de/groups/univention/dev-issues/-/epics/19)
