@@ -9,6 +9,10 @@ Please be aware that the information here is public and that this repository may
 
 For records about internal decisions see the private repository [univention/internal/decision-records](https://git.knut.univention.de/univention/internal/decision-records).
 
+## Full-text search
+
+To do a full-text search in this repository, open the left menu panel and click on the magnifying glass icon 🔎 , type slash (Shift-7: `/`) or by clicking on this link: https://git.knut.univention.de/search?search=&nav_source=navbar&project_id=856&group_id=3&search_code=true&repository_ref=main
+
 ## Directory structure
 
 - Top level directories should be products or concerns, not teams.
