@@ -33,8 +33,9 @@ unacceptable ATM.
 
 The first test (primary UCS 5.2) looked promising, `memberOf` attribute even for nested groups are created by the `dynlist` module:
 
-**slapd.conf configuration**
-```
+#### slapd.conf configuration
+
+```text
 overlay dynlist
 dynlist-attrset groupOfURLs memberURL uniqueMember+memberOf@univentionGroup*
 
@@ -46,8 +47,10 @@ dynlist-attrset groupOfURLs memberURL uniqueMember+memberOf@univentionGroup*
 #memberof-dangling       ignore
 #memberof-refint         false
 ```
-**LDAP objects**
-```
+
+#### LDAP objects
+
+```text
 dn: uid=test2,cn=users,dc=ucs,dc=test
   
 dn: cn=basegroup,cn=groups,dc=ucs,dc=test
@@ -57,8 +60,10 @@ uniqueMember: uid=test2,cn=users,dc=ucs,dc=test
 dn: cn=nested1,cn=groups,dc=ucs,dc=test
 uniqueMember: cn=basegroup,cn=groups,dc=ucs,dc=test
 ```
-**ldapsearch one user object with memberOf**
-```
+
+#### ldapsearch one user object with memberOf
+
+```text
 univention-ldapsearch uid=test2 memberOf
 
 dn: uid=test2,cn=users,dc=ucs,dc=test
@@ -69,29 +74,34 @@ memberOf: cn=domain users,cn=groups,dc=ucs,dc=test
 
 But the performance is a killer ATM. We created a test server with the test/utils/200.000-users.py tool from our performance test setup.
 
-**with `dynlist` module**
-```
+#### with `dynlist` module
+
+```text
 $ time univention-ldapsearch uid=testuser548 memberOf
 ...
-real	0m21,885s
-user	0m0,176s
-sys	0m0,067s
+real    0m21,885s
+user    0m0,176s
+sys     0m0,067s
 ```
-**with `memberOf` module**
-```
+
+#### with `memberOf` module
+
+```shell
 $ time univention-ldapsearch uid=testuser548 memberOf
 ...
-real	0m0,248s
-user	0m0,176s
-sys	0m0,033
+real    0m0,248s
+user    0m0,176s
+sys     0m0,033
 ```
+
 Even without "nested" groups feature (`dynlist-attrset groupOfURLs memberURL uniqueMember+memberOf@univentionGroup`, so without the `*`) it is a little bit faster, but still far from acceptable.
-```
+
+```shell
 $ time univention-ldapsearch uid=testuser548 memberOf
 ...
-real	0m12,797s
-user	0m0,186s
-sys	0m0,032s
+real    0m12,797s
+user    0m0,186s
+sys     0m0,032s
 ```
 
 ## keep `memberOf`
