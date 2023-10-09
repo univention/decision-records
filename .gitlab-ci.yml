@@ -1,12 +1,7 @@
-workflow:
 include:
   - project: univention/dist/docker-services
     file:
       - pre-commit.yml
 
-stages:
-  - lint
-
 run_pre_commit:
-  stage: lint
   extends: .pre-commit
