@@ -3,10 +3,10 @@
 
 ---
 
-- status: generally considered a good idea
-- deciders: anyone affected
+- status: accepted
+- deciders: jbornhold, tkintscher, aniemann
 - date: 2023-11-28
-- source: https://git.knut.univention.de/univention/decision-records/-/issues/9
+- source: This decision arose from the discussions regarding streamlining of CI pipelines
 
 ---
 
@@ -29,7 +29,9 @@ A uniform convention for Dockerfile locations and paths on registires should be 
 
 ## Decision Outcome
 
-TBD, but there hasn't been any pushback so far.
+The schemes for locations of Dockerfiles and image paths must be applied to new GitLab projects.
+
+Existing projects should be modified in due course.
 
 We still need to come up with a solution for child pipelines.
 
@@ -40,12 +42,59 @@ See "Risks".
 
 - Good, reduces risk of annoying errors downstream
 - Good, further streamlines the use of common-ci
-- Bad?, in some cases the build-context (think: workdir of the tool building the image) would be equal to the project root
-- Bad, `foo-server/foo-server` looks ugly
 
 ### Risks
 
-If applied uniformly the path to an image will be ... well uniform.
+Changes to the path of the image must be applied in OpenDesk environments.
+
+When implementing the changes this needs to be in sync with changes in OpenDesk.
+
+## More Information
+
+### Path of container images in relation to the project root
+
+A decision needs to be made with regard to path to image names.
+
+Currently they differ on single and multiple container projects.
+
+#### Single Dockerfile, single container projects
+
+It is assumed that every project could eventually become a multi-container project.
+
+As such even on a single container project named `foo-server` the path of the image would be:
+`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-server/foo-server:1.2.3`
+
+The Dockerfile should reside at `docker/foo-server/Dockerfile`.
+
+#### Single Dockerfile, multiple container projects
+
+If multiple containers are build from a single Dockerfile the path should follow this naming scheme:
+`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-frontend:1.2.3`
+`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-frontent-debug:1.2.3`
+
+The Dockerfile should reside at `docker/foo-frontend/Dockerfile`.
+
+#### Multiple Dockerfile, multiple container projects
+
+On a multi container project named `foo-portal`the paths of the images `foo-frontend` and `foo-backend` should be:
+`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-frontend:1.2.3`
+`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-server:1.2.3`
+
+The Dockerfiles should reside at `docker/foo-frontend/Dockerfile` and `docker/foo-server/Dockerfile` respectively.
+
+### SouvAP GitLab / other target repositories
+
+Images that are being pushed to the SouvAP GitLab and other target repositories (for example `docker-registry.software-univention.de`) currently are "flattened" to `registry.souvap-univention.de/souvap/tooling/images/univention/SOUVAP_IMAGE_NAME`.
+
+This needs to be changed to incorporate the aforementioned naming scheme.
+
+`registry.souvap-univention.de/souvap/tooling/images/univention/PROJECT_NAME/IMAGE_NAME`.
+
+A deviation of `SOUVAP_IMAGE_NAME` from `IMAGE_NAME` should not be required and as such not be possible.
+
+### Special considerations regarding projects with child pipelines
+
+This decision does not yet apply to projects that use child pipelines to build and push images.
 
 In the case of univention portal this would mean the the current:
 - `./docker/portal-listener/Dockerfile`
@@ -105,46 +154,3 @@ and
 - `gitregistry.knut.univention.de/univention/customers/dataport/upx/univention-portal/portal-udm-extensions`
 - `gitregistry.knut.univention.de/univention/customers/dataport/upx/univention-portal/wait-for-dependency`
 - `gitregistry.knut.univention.de/univention/customers/dataport/upx/univention-portal/portal-listener`
-
-## More Information
-
-### Path of container images in relation to the project root
-
-A decision needs to be made with regard to path to image names.
-
-Currently they differ on single and multiple container projects.
-
-#### Single Dockerfile, single container projects
-
-It is assumed that every project could eventually become a multi-container project.
-
-As such even on a single container project named `foo-server` the path of the image would be:
-`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-server/foo-server:1.2.3`
-
-The Dockerfile should reside at `docker/foo-server/Dockerfile`.
-
-#### Single Dockerfile, multiple container projects
-
-If multiple containers are build from a single Dockerfile the path should follow this naming scheme:
-`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-frontend:1.2.3`
-`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-frontent-debug:1.2.3`
-
-The Dockerfile should reside at `docker/foo-frontend/Dockerfile`.
-
-#### Multiple Dockerfile, multiple container projects
-
-On a multi container project named `foo-portal`the paths of the images `foo-frontend` and `foo-backend` should be:
-`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-frontend:1.2.3`
-`gitregistry.knut.univention.de/univention/customers/dataport/upx/foo-portal/foo-server:1.2.3`
-
-The Dockerfiles should reside at `docker/foo-frontend/Dockerfile` and `docker/foo-server/Dockerfile` respectively.
-
-### SouvAP GitLab / other target repositories
-
-Images that are being pushed to the SouvAP GitLab and other target repositories (for example `docker-registry.software-univention.de`) currently are "flattened" to `registry.souvap-univention.de/souvap/tooling/images/univention/SOUVAP_IMAGE_NAME`.
-
-This needs to be changed to incorporate the aforementioned naming scheme.
-
-`registry.souvap-univention.de/souvap/tooling/images/univention/PROJECT_NAME/IMAGE_NAME`.
-
-A deviation of `SOUVAP_IMAGE_NAME` from `IMAGE_NAME` should not be possible.
