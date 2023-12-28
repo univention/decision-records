@@ -7,9 +7,9 @@
 
 ## Context/description
 
-An ADR about _{context and problem statement}_ should be written.
+Write an ADR about _{context and problem statement}_.
 
-The following options, risks and gains should be considered in the ADR:
+Consider the following options, risks, and gains in the ADR:
 
 - ...
 - ...
