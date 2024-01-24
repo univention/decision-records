@@ -1,9 +1,11 @@
 # Handle Renovate updates manually in UMS
 
+---
+
 - status: accepted
 - date: 2024-01-23
-- deciders: openDesk Dev Team
-- consulted: edamrose
+- author: jbornhold
+- coordinated with: openDesk Dev Team, edamrose
 
 ---
 
