@@ -10,7 +10,7 @@
 - status: accepted
 - supersedes: -
 - superseded by: -
-- date: 2024-03-22
+- date: 2024-04-03
 - author: @dtroeder
 - approval level: low (see [explanation](https://git.knut.univention.de/univention/decision-records/-/blob/main/adr-template.md?ref_type=heads&plain=1#L19) | Low impact on platform and business. Decisions at this level can be made within the TDA with the involved team(s). Other stakeholders are then informed.)
 - coordinated with: **TODO** {list everyone involved in the decision and whose opinions were sought (e.g. subject-matter experts)}
@@ -127,7 +127,29 @@ See ADR [0008 Structured Logging](0008-structured-logging.md) about that.
 ## Sensitive data
 
 What is "sensitive data" and how to handle it?
-Please read [section _Sensitive data_ in the logging concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md#sensitive-data).
+From [section _Sensitive data_ in the logging concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md#sensitive-data):
+
+---
+
+We are no experts on the matter, so we should get in contact with a data protection officer to verify
+the following rules:
+
+- Generally, all _non-technical_ user-related data (e.g., `firstname`, `birthday`) is most likely
+  deserving data protection and must not be logged.
+- Purely _technical_ user-related data (e.g., `uidNumber`, `memberUid`) is a grey zone. While it may not
+  be personal data, it can be used to identify an individual.
+  So, it should be avoided, but it is not strictly forbidden.
+- Database IDs can be logged. Data protection policies usually allow that for operational reasons.
+  - But database IDs can contain personal information, e.g., when the `username` is constructed from a
+    real name (and the `username` is part of the `DN`).
+    From what I understood, legally, they can be logged nevertheless (operational necessities).
+    But for data protection, you SHOULD refrain from logging `cn`, `uid`, `username` and `dn`.
+  - To identify/track LDAP objects you SHOULD use `univentionObjectIdentitfier` with a fallback to
+    `entryUUID`.
+- Data that can be used for privilege escalation or system intrusion, like passwords and access tokens,
+  must not be logged.
+
+---
 
 Generally, sensitive data SHOULD NOT be logged.
 
