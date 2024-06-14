@@ -39,7 +39,8 @@ How should extension for Nubus look like?
 ## Considered Options
 
 - Allow extensions only via network based APIs
-- Place extension code into volumes so that the main container can use it
+- Place extension code into container images which have a loader script
+- Have a loader download and unpack extensions, possibly from a container image
 - Use the existing mechanisms to distribute code through the LDAP directory
 
 ## Pros and Cons of the Options
@@ -50,13 +51,23 @@ How should extension for Nubus look like?
 - Blocking bad, because we would have to do major changes to all components
   which support extensions.
 
-### Place extension code into volumes
+### Place extension code into container images which have a loader script
 
 - Good, because the upstream components do not need any change for this.
 - Good, because this is compatible with bundling extensions at build-time.
 - Good, because extension bundles are based on container images.
 - Good, loading an extension is a simple copy operation in the file-system.
+- Good, because we don't have to build any additional active components
 - Bad, shuffling code around at run-time may be unwanted by users.
+
+### Have a loader download and unpack extensions
+
+- Good, because extensions can be packaged in any container format, e.g.
+  container image or ZIP file.
+- Bad, because we have to build a loader component with logic for download,
+  verification and unpacking of the artifacts.
+- Bad, because we introduce an additional path of artifacts into the deployment
+  which may not be compatible with a user's internal policies.
 
 ### Distribute extensions via LDAP
 
@@ -70,7 +81,8 @@ How should extension for Nubus look like?
 
 ## Decision Outcome
 
-We chose the option to place extension code into volumes.
+We chose the option to place extension code into container images which have a
+loader script.
 
 During the investigation we found that this pattern is successfully applied in
 public charts like Bitnami's Nginx chart and the Helm chart of Velero. An
