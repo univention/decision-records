@@ -203,3 +203,9 @@ extensions:
 extensions_v2:
   - extension-b
 ```
+
+## More information
+
+Further details have been captured into the Nubus Infocenter and can be found in
+the following place:
+<https://git.knut.univention.de/univention/internal/nubus-infocenter/-/tree/main/topics/extensions?ref_type=heads>
