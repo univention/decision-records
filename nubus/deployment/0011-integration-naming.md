@@ -48,15 +48,15 @@ UMC module, Guardian rules, Portals/* objects, custom.css/svg/png (and many more
 **(Nubus) Extension** (formally Plugin)
 A file or set of files that implements **exactly one** *Nubus-Extension-Interface**.
 
-**(Nubus-)Extension-Bundle:**)
+**(Nubus-)Extension-Set:**)
 A set of extensions that enable a common use case.
-The extensions in an Extension-Bundle often depend on each other, which is why they
+The extensions in an Extension-Set often depend on each other, which is why they
 which is why they need to be versioned and packaged as a single artifact.
 Examples are Portal extensions, Self-Service extensions,
 OX extensions, openDesk extensions.
 
 **(Nubus) Extension Image:**.
-OCI / Docker image containing **exactly one** Extension-Bundle.
+OCI / Docker image containing **exactly one** Extension-Set.
 
 **(Nubus-Extension-)Target-Application:
 Technical Nubus component that provides Extension-Interface(s).
