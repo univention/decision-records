@@ -1,5 +1,5 @@
 
-# UDM REST API reload upon changes to data model (modules, extended attributes/options)
+# UDM (REST API) reload upon changes to data model (modules, extended attributes/options)
 
 ---
 
@@ -18,7 +18,7 @@
 
 ## Context and Problem Statement
 
-Once started and initialized, the UDM REST API does not adapt to changes in the data model.
+Once started and initialized, the UDM (REST API) does not adapt to changes in the data model.
 
 UDM creates its data model at runtime from Python modules and configuration objects stored in LDAP.
 But it does that only once.
@@ -26,20 +26,23 @@ After the Python modules are loaded and the configuration from LDAP is applied,
 UDM does not detect changes to them and won't reconfigure itself.
 
 In UCS, a listener module detects changes to the LDAP objects and restarts the UDM REST API.
-Changes to Python modules are only applied by Debian packages, which are responsible for restarting the UDM REST API.
+Changes to Python modules are only applied by Debian packages,
+which are responsible for restarting the UDM REST API and other Python-UDM clients like the UMC.
 
 In Nubus for Kubernetes, updates to Python modules and configuration objects in LDAP are also possible.
-However, the UDM REST API is not currently restarted after such a change.
-Thus, the data model of UDM REST API servers is not updated and may even be inconsistent between multiple instances.
+However, the UDM REST API, the UMC and the UDM Transformer are not currently restarted after such a change.
+Thus, the data model of UDM REST API, UMC and the UDM Transformer instances is not updated and
+may even be inconsistent between multiple instances.
 
 From a customer's perspective, that is a regression compared to Nubus on UCS.
 This ADR discusses the possibilities of handling this situation.
 
 ## Decision Drivers
 
-- Standardization: The UDM REST API should behave the same in Nubus for UCS and Nubus for Kubernetes.
+- Standardization: The UDM software should behave the same in Nubus for UCS and Nubus for Kubernetes.
 - Robustness: Update/configuration errors should be handled gracefully.
-- Scalability: The UDM REST API may run on multiple UCS machines or in numerous containers in Kubernetes.
+- Scalability: UDM software (UDM REST API, UMC and UDM Transformer) may run on multiple UCS machines or
+  in numerous containers in Kubernetes.
   In both cases, all instances must be reconfigured.
 - User experience: Technical details like a service restart after a configuration change should be automated and
   not burden an operator's life.
@@ -63,6 +66,7 @@ find out the IPs of all running instances to call an endpoint on each.
 - Good, because it uses standardized Kubernetes features for configuration, retries, and error handling.
 - Good, because hides technical details behind an API.
 - Good, because an operator can implement complex update scenarios.
+- Good, because all types of Python-UDM software can register themselves and an operator can restart them all.
 - Bad, because the mechanism doesn't exist on UCS and would thus incur additional maintenance effort.
 
 ### Add an endpoint to the UDM REST API to tell it to reload itself
@@ -75,6 +79,7 @@ a restart of its child processes in multi-process mode.
 - Good, because the same mechanism can be used on UCS, reducing maintenance effort.
 - Bad, because it requires the update process or operator to know the addresses of all running instances.
   That may not be possible for an init container of e.g., a bundled integration.
+- Bad, because it won't help to restart the UMC and the UDM Transformer.
 
 ### Do not support configuration changes at runtime
 
@@ -86,6 +91,7 @@ The documentation should hint at the possibility of installing Python modules an
 
 - Good, because is consistent with common Kubernetes practices.
 - Good, because implementing this solution requires a low effort.
+- Good, because this works for all types of Python-UDM software (currently UDM REST API, UMC and UDM Transformer).
 - Neutral, because currently installing and changing of configuration objects in LDAP cannot be prevented.
 - Bad, because building extension containers may be additional effort for customers and developers.
 
