@@ -40,6 +40,7 @@ This ADR discusses the possibilities of handling this situation.
 ## Decision Drivers
 
 - Standardization: The UDM software should behave the same in Nubus for UCS and Nubus for Kubernetes.
+- Standardization: The deployment configuration and runtime settings of UDM software are currently sourced from multiple places (UCR, LDAP environment variables, …). A single configuration source makes installations easier to clone, manage, migrate, test, and explain, reducing misconfiguration risks and improving user experience.
 - Robustness: Update/configuration errors should be handled gracefully.
 - Scalability: UDM software (UDM REST API, UMC and UDM Transformer) may run on multiple UCS machines or
   in numerous containers in Kubernetes.
