@@ -95,6 +95,7 @@ The documentation should hint at the possibility of installing Python modules an
 - Good, because this works for all types of Python-UDM software (currently UDM REST API, UMC and UDM Transformer).
 - Neutral, because currently installing and changing of configuration objects in LDAP cannot be prevented.
 - Bad, because building extension containers may be additional effort for customers and developers.
+- Bad, because the pre-existing concept of dynamic extended attributes would effectively be abandoned.
 
 ## Decision Outcome
 
@@ -104,19 +105,16 @@ the effort to implement the other options does not justify a delay of the Nubus 
 
 ### Consequences
 
-<!-- This is an optional element. Feel free to remove. -->
-
-- Good, because {positive consequence, e.g., improvement of one or more desired qualities, …}
-- Bad, because {negative consequence, e.g., compromising one or more desired qualities, …}
-- … <!-- numbers of consequences can vary -->
+Nubus for Kubernetes does not support configuration changes at runtime,
+which is different from how it behaves in UCS.
+We should document this so customers migrating from UCS know it.
 
 ### Risks
 
-<!-- It's OK to repeat points from the above "Cons of the Options". -->
-<!-- Maybe use "Risk storming" to identify risks. -->
-
-- When implementing the decision, a {small, medium, high} risk exists, that {…}.
-- …
+The risk exists that regardless of what we document,
+customers use the UDM REST API to dynamically change extended attributes without restarting UDM-using services.
+Even if the resulting support cases can be quickly closed with a link to the documentation,
+it leaves a bad taste that a REST API offers an endpoint that requires manual intervention.
 
 ### Confirmation
 
