@@ -4,4 +4,5 @@ include:
       - pre-commit.yml
 
 run_pre_commit:
+  cache: []
   extends: .pre-commit
