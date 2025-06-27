@@ -1,6 +1,6 @@
 # Playwright for E2E testing in UCS
 
-- status: in progress
+- status: accepted
 - date: 2023-13-07
 - deciders: tech-intern
 - consulted: IAM/Bitflip/SouvAP Team

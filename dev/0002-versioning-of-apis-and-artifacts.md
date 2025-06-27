@@ -2,7 +2,7 @@
 
 ---
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
 - date: 2023-11-29
