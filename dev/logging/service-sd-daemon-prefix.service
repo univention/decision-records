@@ -1,0 +1,22 @@
+#
+# Systemd unit to start a script once.
+#
+# cp service-sd-daemon-prefix.service /etc/systemd/system/service-sd-daemon-prefix.service
+# vim /etc/systemd/system/service-sd-daemon-prefix.service
+# -> adapt path to service-sd-daemon-prefix.py
+# systemctl restart service-sd-daemon-prefix
+# journalctl --output verbose --output-fields MESSAGE,PRIORITY -t service-sd-daemon-prefix.py
+#
+
+[Unit]
+Description=Run once unit that starts a script that writes to STDOUT and STDERR.
+After=local-fs.target
+After=network.target
+
+[Service]
+ExecStart=/home/dtroeder/git/research-library/research/logging_concept/adr_poc/service-sd-daemon-prefix.py
+RemainAfterExit=true
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

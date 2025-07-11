@@ -14,7 +14,7 @@
 - author: @dtroeder
 - approval level: low (see [explanation](https://git.knut.univention.de/univention/decision-records/-/blob/main/adr-template.md?ref_type=heads&plain=1#L19) | Low impact on platform and business. Decisions at this level can be made within the TDA with the involved team(s). Other stakeholders are then informed.)
 - coordinated with: **TODO** {list everyone involved in the decision and whose opinions were sought (e.g. subject-matter experts)}
-- source: [Logging concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md)
+- source: [Logging concept](logging/logging_concept.md)
 - scope: ALL Univention software products.
   New products in Docker containers or in the host on UCS 5.2 MUST adhere to the ADR immediately.
   Existing software MUST be migrated gradually in errata and point releases of UCS 5.2.
@@ -27,7 +27,7 @@
 
 ## Context and Problem Statement
 
-The [logging concept accepted on 21.02.2024](https://git.knut.univention.de/univention/internal/research-library/-/blob/07df7be3a61f5eeab776309f19c3abb7c943ff44/research/logging_concept/README.md)
+The [logging concept accepted on 21.02.2024](logging/logging_concept.md)
 describes, besides a logging architecture, what and how to log: message content and metadata.
 
 This ADR specifies various details about how UCS' components must produce log messages:
@@ -127,7 +127,7 @@ See ADR [0008 Structured Logging](0008-structured-logging.md) about that.
 ## Sensitive data
 
 What is "sensitive data" and how to handle it?
-From [section _Sensitive data_ in the logging concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md#sensitive-data):
+From [section _Sensitive data_ in the logging concept](logging/logging_concept.md#sensitive-data):
 
 ---
 
@@ -208,7 +208,7 @@ Call chain: `main() -> queue_iter() -> parse_queue_item() -> parse_file(path) ->
     the transaction (`queue_id`):
     `logger.warning(f"Reading queue file: {exc!s}", queue_id=queue_id, **exc.kwargs)`
 
-This example exists as a script that you can run: [logging/log_errors.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/log_errors.py).
+This example exists as a script that you can run: [logging/log_errors.py](logging/log_errors.py).
 Please read the instructions in the comment block at its top on how to install it.
 
 When executed, the output of the warning message will be a single log line containing all information:

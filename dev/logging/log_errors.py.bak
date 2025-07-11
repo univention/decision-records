@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+
+# ### Install and run with:
+# python3 -m venv venv
+# pip install logfmter loguru orjson
+# echo '{"a":"A"}' > /tmp/aaa.json
+# touch /tmp/bbb.json  # <- empty file -> invalid json
+# echo '{"c":"C"}' > /tmp/ccc.json
+# ./log-errors.py
+
+import glob
+import sys
+from typing import Any, Dict, Iterator, Tuple
+import uuid
+import logfmter
+import orjson
+from loguru import logger
+
+
+DATA_FORMAT = "JSON"  # allowed values: "JSON", "LOGFMT". Will be ignored if SERIALIZE==True.
+SERIALIZE = False  # allowed values: True, False.
+
+
+class AppBaseException(Exception):
+    def __init__(self, msg, **kwargs):
+        self.kwargs = kwargs
+
+        super(AppBaseException, self).__init__(msg)
+
+
+class FormatError(AppBaseException):
+    ...
+
+
+class QueueItemError(AppBaseException):
+    ...
+
+
+def main() -> None:
+    setup_logging()
+    for queue_id, queue_item in queue_iter():
+        logger.debug("Handling queue item.", item=queue_item, queue_id=queue_id)
+
+
+def queue_iter() -> Iterator[Tuple[str, Dict[str, Any]]]:
+    for path in sorted(glob.glob("/tmp/*.json")):
+        queue_id = uuid.uuid4().hex[:8]
+        try:
+            yield queue_id, parse_queue_item(path)
+        except QueueItemError as exc:
+            logger.warning(f"Reading queue file: {exc!s}", queue_id=queue_id, **exc.kwargs)
+
+
+def parse_queue_item(path: str) -> Dict[str, Any]:
+    try:
+        return parse_file(path)
+    except FormatError as exc:
+        raise QueueItemError(f"Parsing queuing file: {exc!s}", **exc.kwargs) from exc
+
+
+def parse_file(path) -> Dict[str, Any]:
+    data = open(path, "rb").read()
+    try:
+        return parse_json(data)
+    except ValueError as exc:
+        raise FormatError(str(exc), path=path) from exc
+
+
+def parse_json(data: bytes) -> Dict[str, Any]:
+    return orjson.loads(data)
+
+
+# #### Logging setup ####
+
+if SERIALIZE:
+    LOG_FORMAT = "{message}"
+else:
+    LOG_FORMAT = (
+            "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | "
+            "<level>{level}</level> | "
+            "{process} | "
+            "{module}.{function} | "
+            "<level>{message}</level> | "
+            "{extra[serialized]}"
+    )
+
+
+def setup_logging() -> None:
+    logger.remove()
+    logger.add(
+        sys.stderr,
+        format=LOG_FORMAT,
+        level="TRACE",
+        colorize=not SERIALIZE,
+        serialize=SERIALIZE,
+    )
+    if not SERIALIZE:
+        logger.configure(patcher=patching)
+
+
+def patching(record) -> None:
+    if SERIALIZE or DATA_FORMAT == "JSON":
+        record["extra"]["serialized"] = orjson.dumps(
+            record["extra"],
+            default=str,
+            option=orjson.OPT_NON_STR_KEYS | orjson.OPT_SORT_KEYS,
+        ).decode()
+    elif DATA_FORMAT == "LOGFMT":
+        record["extra"]["serialized"] = logfmter.Logfmter.format_params(record["extra"])
+    else:
+        raise ValueError(f"Unsupported format in DATA_FORMAT:  {DATA_FORMAT!r}")
+
+
+if __name__ == "__main__":
+    main()

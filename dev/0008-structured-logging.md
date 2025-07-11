@@ -14,7 +14,7 @@
 - author: @dtroeder
 - approval level: low (see [explanation](https://git.knut.univention.de/univention/decision-records/-/blob/main/adr-template.md?ref_type=heads&plain=1#L19) | Low impact on platform and business. Decisions at this level can be made within the TDA with the involved team(s). Other stakeholders are then informed.)
 - coordinated with: **TODO** {list everyone involved in the decision and whose opinions were sought (e.g. subject-matter experts)}
-- source: [Logging concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md)
+- source: [Logging concept](logging/logging_concept.md)
 - scope: ALL Univention software products.
   New products in Docker containers or in the host on UCS 5.2 MUST adhere to the ADR immediately.
   Existing software MUST be migrated gradually in errata and point releases of UCS 5.2.
@@ -27,7 +27,7 @@
 
 ## Context and Problem Statement
 
-The [logging concept accepted on 21.02.2024](https://git.knut.univention.de/univention/internal/research-library/-/blob/07df7be3a61f5eeab776309f19c3abb7c943ff44/research/logging_concept/README.md)
+The [logging concept accepted on 21.02.2024](logging/logging_concept.md)
 describes, besides a logging architecture, what and how to log: message content and metadata.
 
 This ADR specifies how UCS' components use structured logging.
@@ -96,7 +96,7 @@ But reading JSON is not very comfortable for humans.
 As a compromise between readability for humans and machines the encoding of _only_ the data part is
 RECOMMENDED.
 
-The example script [logging/log_errors.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/log_errors.py) can log in a pure JSON-serialized form
+The example script [logging/log_errors.py](logging/log_errors.py) can log in a pure JSON-serialized form
 and in two "hybrid" modes.
 Change the value of the `DATA_FORMAT` and `SERIALIZE` constants to test it.
 
@@ -218,7 +218,7 @@ When structured logging is used _Option 3: Human-readable header and message, da
 be the preferred format.
 The Univention logging library MAY offer the possibility to switch the message format and data encoding
 to options 2 or 3.
-The example code in [logging/log_errors.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/log_errors.py) shows how easy it is to implement that.
+The example code in [logging/log_errors.py](logging/log_errors.py) shows how easy it is to implement that.
 
 ## Configuration: Human-readable JSON or Logfmt or completely JSON
 
@@ -351,7 +351,7 @@ logger.info("Doing something else.")
   - Built-in logging Handlers can be used as Loguru sinks.
   - Standard logging messages (of other Python libraries) can be redirected into Loguru.
   - Loguru can propagate its messages to standard logging.
-  - See in file [logging/univention_logging.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/univention_logging.py) how it is done.
+  - See in file [logging/univention_logging.py](logging/univention_logging.py) how it is done.
     (Instructions and example execution in comment block at the top.)
 - Good, because very active community.
 - Good, because available as Debian package.
@@ -443,7 +443,7 @@ Loguru is a general purpose logging library with batteries included that focuses
 friendliness.
 Out-of-the-box, besides regular logging, its own structured logging output only support pure-json,
 but it can be configured to generate all three output formats
-(see example script [logging/log_errors.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/log_errors.py)).
+(see example script [logging/log_errors.py](logging/log_errors.py)).
 
 Using Logfmter and python-json-logger the standard library can log pure-logfmt or pure-json.
 The recipie in section _Standard library "logging" module (cookbook)_ describes a (hacky) way to also
@@ -468,7 +468,7 @@ create hybrid output.
   It has all desired features,
   and brings additional useful features that are very welcome,
   all while being easier to configure than any of the alternatives (including the standard logging library).
-  See in file [logging/univention_logging.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/univention_logging.py) how easy it was to implement
+  See in file [logging/univention_logging.py](logging/univention_logging.py) how easy it was to implement
   most of what is required.
   It is highly compatible with the standard library logging module.
   Besides the standard logging library it has the highest likelihood of new developers already knowing

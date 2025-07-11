@@ -14,7 +14,7 @@
 - author: @dtroeder
 - approval level: medium (see [explanation](https://git.knut.univention.de/univention/decision-records/-/blob/main/adr-template.md?ref_type=heads&plain=1#L19) | Decisions of medium scope, i.e. minor adjustments to the platform or strategic decisions regarding specifications. The approval of the product owner is requested and the decision is made jointly.)
 - coordinated with: **TODO** {list everyone involved in the decision and whose opinions were sought (e.g. subject-matter experts)}
-- source: [Logging concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md)
+- source: [Logging concept](logging/logging_concept.md)
 - scope: ALL Univention software products.
   New products in Docker containers or in the host on UCS 5.2 MUST adhere to the ADR immediately.
   Existing software MUST be migrated gradually in errata and point releases of UCS 5.2.
@@ -40,12 +40,12 @@ and b) for the combination of the decisions to produce a coherent result.
 
 ## Context and Problem Statement
 
-The [logging concept accepted on 21.02.2024](https://git.knut.univention.de/univention/internal/research-library/-/blob/07df7be3a61f5eeab776309f19c3abb7c943ff44/research/logging_concept/README.md)
+The [logging concept accepted on 21.02.2024](logging/logging_concept.md)
 describes a topology where all log messages in one way or the other end up in a hosts local journald
 database `(*1)`.
 It also describes different ways for operators to access the log messages in that database.
 
-![Logging topology](https://git.knut.univention.de/univention/internal/research-library/-/raw/main/research/logging_concept/topology.png?ref_type=heads&inline=false "Logging topology")
+![Logging topology](logging/topology.png?ref_type=heads&inline=false "Logging topology")
 
 This ADR specifies how UCS' systems and components must be configured or modified to realize this logging
 architecture:
@@ -191,7 +191,7 @@ Use `--no-pager` to not have a pager,
 `-g <pattern>` to include only messages with a certain text,
 and `-f` to make it keep printing new messages as they appear.
 
-According to [section _Log levels_ of the logging concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md#log-levels)
+According to [section "Log levels" of the logging concept](logging/logging_concept.md#log-levels)
 only six log levels should be used by Univention software: TRACE, DEBUG, INFO, WARNING, ERROR and
 CRITICAL.
 They MUST be mapped to Syslog priorities in the following way:
@@ -223,7 +223,7 @@ ulog_e () {…}  # ERROR
 ulog_c () {…}  # CRITICAL
 ```
 
-See example shell script [shell-sd-daemon-prefix.sh](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/shell-sd-daemon-prefix.sh).
+See example shell script [shell-sd-daemon-prefix.sh](logging/shell-sd-daemon-prefix.sh).
 
 ### Preserving log level of messages from Python
 
@@ -248,10 +248,10 @@ prefixing, as it's useless when logging from Docker containers in both UCS and N
 _Preserving log level of messages from Docker_).
 
 An example showcasing the prefix mechanics with a systemd unit and a "service" is attached:
-[service-sd-daemon-prefix.service](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/service-sd-daemon-prefix.service),
-[service-sd-daemon-prefix.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/service-sd-daemon-prefix.py).
+[service-sd-daemon-prefix.service](logging/service-sd-daemon-prefix.service),
+[service-sd-daemon-prefix.py](logging/service-sd-daemon-prefix.py).
 
-See in file [logging/univention_logging.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/univention_logging.py) how it is done as a library:
+See in file [logging/univention_logging.py](logging/univention_logging.py) how it is done as a library:
 
 - Run `./logging/log_errors.py` to see the colored output without prefix in the terminal.
 - Run `./logging/log_errors.py 2>&1 | tee /dev/null` to see that the prefix is added for a non-terminal.
@@ -285,7 +285,7 @@ This leaves us with only a few options:
    to find all messages from a Docker container with severity WARNING or higher.
    The Python library lacks the regular expression feature, supports only exact matching.
    A workaround would have to be found if the idea of a
-   [UMC "Logs" module](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/README.md#umc-logs-module)
+   [UMC "Logs" module](logging/logging_concept.md#umc-logs-module)
    would be implemented.
 
 2. Univention Docker applications use a log extractor (in a sidecar container).
@@ -306,14 +306,14 @@ This leaves us with only a few options:
 3. Univention Docker applications use a custom log forwarding solution.
 
     As a proof of concept I have written a Syslog server
-    ([syslog2systemd_server.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/syslog2systemd_server.py)) that parses and forwards messages to journald.
+    ([syslog2systemd_server.py](logging/syslog2systemd_server.py)) that parses and forwards messages to journald.
     It extracts the Syslog "severity" (log level), "facility" and "ident" (application ID) from the
     message and sends it together with the message directly to journald.
     It can easily be extended to also extract key-value pairs from structured logging, passing them to
     journald, where they will be stored for indexed searching.
     The server is accompanied by a performance test.
     See the comment block at the top of
-    [syslog2systemd_performance_test.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/syslog2systemd_performance_test.py) for the results of a run on
+    [syslog2systemd_performance_test.py](logging/syslog2systemd_performance_test.py) for the results of a run on
     a UCS 5.0 virtual machine.
     Using a Syslog server allows the Docker application to simply use the Python builtin
     `logging.handlers.SysLogHandler` without compromising on metadata.
@@ -442,13 +442,13 @@ Logs to be stored in journald using to different ways have been benchmarked on a
 Instruction for installing and running are in the comment block of each file.
 For convenience the output of a run is also in the comments.
 
-1. A systemd service writing to STDERR: [py-stderr-performance.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/py-stderr-performance.py)
+1. A systemd service writing to STDERR: [py-stderr-performance.py](logging/py-stderr-performance.py)
 2. A Python script writing directly to journald using `systemd.journal.send()`:
-  [py-journald-send-performance.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/py-journald-send-performance.py)
+  [py-journald-send-performance.py](logging/py-journald-send-performance.py)
 3. A Python script writing directly to journald using `systemd.journal.JournalHandler`:
-  [py-journald-log-performance.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/py-journald-log-performance.py)
+  [py-journald-log-performance.py](logging/py-journald-log-performance.py)
 4. A Python script in a Docker container logging to the custom Syslog daemon that forwards to journald:
-  [syslog2systemd_performance_test.py](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/research/logging_concept/adr_poc/syslog2systemd_performance_test.py)
+  [syslog2systemd_performance_test.py](logging/syslog2systemd_performance_test.py)
 
 ```text
 1. Logged 10000 messages to STDERR without delay between messages in 0.407 sec (24.6/ms) [..].
