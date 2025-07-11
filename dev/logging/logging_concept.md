@@ -1,14 +1,9 @@
-<!--
-- Max line length: 120
-- Each sentence on a new line for better diffs
--->
-
 # Logging concept for UCS
 
 - Audience: Dev, PM, PS
 - Authors: @dtroeder, @phahn
 - State: Accepted and published
-- References: Concept was implemented in ADRs 
+- References: Concept was implemented in ADRs
   [0004 Logging Topology](https://git.knut.univention.de/univention/decision-records/-/blob/main/dev/0004-logging-topology.md),
   [0005 Log levels](https://git.knut.univention.de/univention/decision-records/-/blob/main/dev/0005-log-levels.md),
   [0006 Log format](https://git.knut.univention.de/univention/decision-records/-/blob/main/dev/0006-log-format.md),
@@ -63,9 +58,9 @@ differ greatly.
   previously mentioned UCRVs.
 - Log rotation using `TimedRotatingFileHandler` from the Python `logging` library, executed inside Docker
   containers, leading to corrupted log files.
-    - This can be mitigated by using `WatchedFileHandler` in the Python app in the Docker container and
-      letting a service in the host system do the log rotation. However, The configuration of a Docker
-      app's host resources is undesirable.
+  - This can be mitigated by using `WatchedFileHandler` in the Python app in the Docker container and
+    letting a service in the host system do the log rotation. However, The configuration of a Docker
+    app's host resources is undesirable.
 - When initialization or low-level errors occur, logs created by Python software in Docker containers do
   not contain errors printed to standard out (STDOUT) and standard error (STDERR).
 - The format of log lines has not been standardized, making them harder to parse for both humans and
@@ -81,84 +76,92 @@ Logs for different kinds of software and in different environments are created a
 Univention software
 
 1. Execution environment
-    1. running in the host system (Debian package)
-    2. running in a Docker container
+   1. running in the host system (Debian package)
+   2. running in a Docker container
 2. Type of software
-    1. CLI
-        1. non-interactive
-        2. interactive
-    2. Web interface backend
-    3. Long-running service
+   1. CLI
+      1. non-interactive
+      2. interactive
+   2. Web interface backend
+   3. Long-running service
 
 3rd party software
 
 1. Execution environment
-    1. running in the operating system (Debian package)
-    2. running in Docker
+   1. running in the operating system (Debian package)
+   2. running in Docker
+
 ---
 
-**Univention software**
+#### Univention software
 
 1. Execution environment
-    1. Univention software running in the host system generally writes their logs directly to files.
-        - The `Univention Debug` and Python `logging` libraries are used.
-        - A few exceptions exist, like email server components using the Unix `syslog` library routines.
-        - Log rotation is configurable through UCRV if done by the Linux `logrotate` service or hard
-          coded if done by the Python `logging` library.
-    2. Univention software running in Docker.
-        - ATM software running in Docker containers is always packaged as an App Center app. There exist
-          two scenarios:
-            - Usage of the app is triggered by a change in the LDAP DB, and the executed code is in the
-              `listener_trigger`, started by an "App Center converter" service.
-              In that case, logging is done by writing to STDOUT.
-              This is captured by the "App Center converter" service, which runs in the host and
-              writes to a log file `/var/log/univention/listener_module/<app>.log`.
-              That file is automatically rotated using the Linux `logrotate` service, configurable with
-              UCR.
-            - The Docker container starts a long-running process. It writes its logs directly to files
-              on a bind-mounted volume. It also rotates its log files on its own, which may not be
-              configurable. Usually, the Python `logging` library is used. Newer UCS@school Python code
-              uses the `Loguru` library.
+   1. Univention software running in the host system generally writes their logs directly to files.
+
+      - The `Univention Debug` and Python `logging` libraries are used.
+      - A few exceptions exist, like email server components using the Unix `syslog` library routines.
+      - Log rotation is configurable through UCRV if done by the Linux `logrotate` service or hard
+        coded if done by the Python `logging` library.
+
+   2. Univention software running in Docker.
+
+      - ATM software running in Docker containers is always packaged as an App Center app. There exist
+        two scenarios:
+        - Usage of the app is triggered by a change in the LDAP DB, and the executed code is in the
+          `listener_trigger`, started by an "App Center converter" service.
+          In that case, logging is done by writing to STDOUT.
+          This is captured by the "App Center converter" service, which runs in the host and
+          writes to a log file `/var/log/univention/listener_module/<app>.log`.
+          That file is automatically rotated using the Linux `logrotate` service, configurable with
+          UCR.
+        - The Docker container starts a long-running process. It writes its logs directly to files
+          on a bind-mounted volume. It also rotates its log files on its own, which may not be
+          configurable. Usually, the Python `logging` library is used. Newer UCS@school Python code
+          uses the `Loguru` library.
+
 2. Type of software
-    1. CLI
-        1. non-interactive
-            - If meant to be run by other software (e.g., in a Debian maintainer or join script), all
-              output is usually sent to STDOUT. The calling software is responsible for dealing with the
-              output.
-            - Complex software often writes INFO or ERROR level output to STDOUT and _additionally_
-              to a log file, often with a configurable log level.
-        2. interactive
-            - Same as for "non-interactive".
-            - If (parts of) the output is meant to be used by other software (e.g. in a pipe), then
-              status messages and logs are written to STDERR, and the text meant for further processing
-              to STDOUT.
-    2. Web interface backend
-        - UMC modules are installed in the host and use the `Univention Debug` library to write directly
-          to log files.
-        - HTTP API backends for Javascript frontends (currently exist only in UCS@school, but in the
-          future also in UCS) are installed as Docker apps. They log using Python `logging` or `Loguru`
-          and have the problems mentioned earlier with log rotation.
-    3. Long-running service
-        - Long-running processes write their logs directly to files. The log level is usually
-          configurable. Log rotation is traditionally done by the Linux `logrotate` service, which either
-          restarts the service or sends a `HUP` signal to reopen the log file.
+   1. CLI
+      - non-interactive
+        - If meant to be run by other software (e.g., in a Debian maintainer or join script), all
+          output is usually sent to STDOUT. The calling software is responsible for dealing with the
+          output.
+        - Complex software often writes INFO or ERROR level output to STDOUT and _additionally_
+          to a log file, often with a configurable log level.
 
-**3rd party software**
+      - interactive
+        - Same as for "non-interactive".
+        - If (parts of) the output is meant to be used by other software (e.g. in a pipe), then
+          status messages and logs are written to STDERR, and the text meant for further processing
+          to STDOUT.
+
+   2. Web interface backend
+      - UMC modules are installed in the host and use the `Univention Debug` library to write directly
+        to log files.
+      - HTTP API backends for Javascript frontends (currently exist only in UCS@school, but in the
+        future also in UCS) are installed as Docker apps. They log using Python `logging` or `Loguru`
+        and have the problems mentioned earlier with log rotation.
+
+   3. Long-running service
+      - Long-running processes write their logs directly to files. The log level is usually
+        configurable. Log rotation is traditionally done by the Linux `logrotate` service, which either
+        restarts the service or sends a `HUP` signal to reopen the log file.
+
+#### 3rd party software
 
 1. Execution environment
-    1. running in the operating system (Debian package)
-        - Usually logs directly to files. Paths and log levels are usually configurable.
-        - The software itself sometimes does log rotation, but more often, it is expected to be done by
-          the Linux `logrotate` service.
-    2. running in Docker
-        - Startup output always goes to STDOUT.
-        - Application logs sometimes go to STDOUT, sometimes into files on a mounted "data volume".
-          Both variants are common, although best practice is logging to STDOUT.
-        - With the current UCS Docker logging driver configuration, logs sent to STDOUT are hard to find
-          and read while the app is installed and even worse, they are lost during app upgrade and
-          after app removal.
-        - Log rotation is either done by the app itself when logging into a file or not at all when
-          logging to STDOUT (risk of disk space exhaustion).
+   1. running in the operating system (Debian package)
+      - Usually logs directly to files. Paths and log levels are usually configurable.
+      - The software itself sometimes does log rotation, but more often, it is expected to be done by
+        the Linux `logrotate` service.
+   2. running in Docker
+      - Startup output always goes to STDOUT.
+      - Application logs sometimes go to STDOUT, sometimes into files on a mounted "data volume".
+        Both variants are common, although best practice is logging to STDOUT.
+      - With the current UCS Docker logging driver configuration, logs sent to STDOUT are hard to find
+        and read while the app is installed and even worse, they are lost during app upgrade and
+        after app removal.
+      - Log rotation is either done by the app itself when logging into a file or not at all when
+        logging to STDOUT (risk of disk space exhaustion).
 
 ## New logging concept
 
@@ -321,7 +324,7 @@ For example:
 
 The output will be a single log line containing all information:
 
-```
+```text
 <timestamp> WARNING Queue read error, skipping item: Error reading queue file: Parsing JSON at line 12. path='/foo/bar' qid='d32f61'
 ```
 
@@ -382,7 +385,7 @@ That can be parsed or tokenized like this:
 The values in rules starting with _Log lines MAY contain_ can either be part of the metadata section
 left of the message or of the structured data.
 
-**Example**
+##### Example
 
 ```text
 2023-10-27T08:22:57.275138+00:00 INFO  31f863092ade modified group | dn='...' old={..} new={..}
@@ -440,10 +443,9 @@ The UCRVs will be stored in DCD.
 So, the log levels are consistent when a service is deployed multiple times in the domain.
 Using DCD allows services to reconfigure themselves when values change.
 
-
 The proposed UCR key schema is `logging/<application>/<logger>=<level>`.
 
-- `<application>` is the name of the program / script / service the log level(s) should be defined for. 
+- `<application>` is the name of the program / script / service the log level(s) should be defined for.
   - The special name `default` means that it will be defined for _all_ applications.
 - `<logger>` is the name of a Python package or module,
   e.g. `univention.admin.handlers.users.user` (a single module) or `univention.admin` (a package which includes all handlers, utils, etc.).
@@ -517,7 +519,7 @@ Logs are _data_ produced by applications, just like the "regular data" they crea
 As with regular data, the driving factors for its persistence are:
 
 - Reliability, integrity, and security: How secure is the data once the app has handed it over?
-- Supported data structures: How well can the data be encoded/decoded for later use? 
+- Supported data structures: How well can the data be encoded/decoded for later use?
   What about searching in it?
 - Management: How well can the storage be resized, transferred, compressed, and deduplicated?
   What about retention policies?
@@ -534,30 +536,30 @@ structures.
 
 We have devised a multi-layered setup that caters to all the above qualities:
 
-##### Applications send logs
+#### Applications send logs
 
 Applications send their logs either to STDERR or `journald`:
 
 - An application sends its logs to STDERR when it is spawned by `systemd` or another process:
-    - That "file" is always exclusively available to the application.
-        - No need to create directories, prevent name clashes, etc.
-        - There is no need for the application to ensure correct file permissions.
-          (Hard coding also blocks the operator from changing them.)
-        - There is no need to close and reopen the file descriptor for log rotation, potentially
-          requiring to signal or restart the application.
-    - The application does not need to add metadata (like the hostname) to logs,
-      as that can be done by the software that receives STDERR.
-    - The software spawning the application (`systemd` or a Univention app) forwards everything it
-      receives on its STDERR file descriptor to `journald`.
-        - If it's running in a Docker container, and UCS is configured to use the Docker
-          journald logging driver, output on STDOUT and STDERR will automatically be sent to
-          `journald`.
-        - If it's running in a Docker container in a Kubernetes environment, output on STDOUT and STDERR
-          will automatically be sent to a central log collector.
+  - That "file" is always exclusively available to the application.
+    - No need to create directories, prevent name clashes, etc.
+    - There is no need for the application to ensure correct file permissions.
+      (Hard coding also blocks the operator from changing them.)
+    - There is no need to close and reopen the file descriptor for log rotation, potentially
+      requiring to signal or restart the application.
+  - The application does not need to add metadata (like the hostname) to logs,
+    as that can be done by the software that receives STDERR.
+  - The software spawning the application (`systemd` or a Univention app) forwards everything it
+    receives on its STDERR file descriptor to `journald`.
+    - If it's running in a Docker container, and UCS is configured to use the Docker
+      journald logging driver, output on STDOUT and STDERR will automatically be sent to
+      `journald`.
+    - If it's running in a Docker container in a Kubernetes environment, output on STDOUT and STDERR
+      will automatically be sent to a central log collector.
 - `journald`:
-    - In Python, the `systemd.journal.JournalHandler` can send logs directly to `journald`.
-    - From a shell, `systemd-cat` can be used.
-    - Please be aware that in Kubernetes no local journald service exists and use this option with care.
+  - In Python, the `systemd.journal.JournalHandler` can send logs directly to `journald`.
+  - From a shell, `systemd-cat` can be used.
+  - Please be aware that in Kubernetes no local journald service exists and use this option with care.
 
 For applications, it should be documented in their manual and on the CLI
 how their logs can be read using the `journald` command to make the life of operators easier.
@@ -572,7 +574,7 @@ modification is unknown.
 If all programs, join scripts and the directory listener log to `journald` a date-range
 search will be immeasurably helpful.
 
-###### Multi-processing applications
+##### Multi-processing applications
 
 Applications that consist of multiple processes (like the UMC and the UDM REST API) should also log to
 STDERR or if that's not possible to `journald`.
@@ -600,7 +602,7 @@ Use the Python `setproctitle` module to set a useful process name in each proces
 It will end up in a dedicated key in `journald` that filters can use.
 Avoid sending logs directly to `journald` as it doesn't exist in Kubernetes.
 
-##### `journald` stores logs
+#### `journald` stores logs
 
 `journald` stores logs locally in its database:
 
@@ -752,7 +754,7 @@ and multiple systems.
   "log aggregator" for further processing.
 - It is also possible to send logs directly from an application to a log aggregator server.
   But that requires the server and the network connection to be constantly available, as well as to
-  modify the application to use a suitable client for a particular product. 
+  modify the application to use a suitable client for a particular product.
   The more robust approach is to have a local intermediary that is always available and product agnostic,
   e.g., `journald` or a sidecar container with a buffering log forwarder.
 
