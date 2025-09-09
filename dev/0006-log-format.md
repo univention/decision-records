@@ -9,7 +9,7 @@
 
 - status: accepted
 - supersedes: -
-- superseded by: -
+- superseded by: [0010 Log Format](0010-log-format.md)
 - date: 2024-03-22
 - author: @dtroeder
 - approval level: low (see [explanation](https://git.knut.univention.de/univention/decision-records/-/blob/main/adr-template.md?ref_type=heads&plain=1#L19) | Low impact on platform and business. Decisions at this level can be made within the TDA with the involved team(s). Other stakeholders are then informed.)

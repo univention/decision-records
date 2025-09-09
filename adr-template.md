@@ -18,9 +18,13 @@
 <!--
 Explanation "approval level"
 
-- low: Low impact on platform and business. Decisions at this level can be made within the TDA with the involved team(s). Other stakeholders are then informed.
-- medium: Decisions of medium scope, i.e. minor adjustments to the platform or strategic decisions regarding specifications. The approval of the product owner is requested and the decision is made jointly.
-- high: Decisions with a high impact on the business and IT. Changes that have a high-cost implication or strategic impact, among other things. These types of decisions require the decision to be made together with the leadership board.
+- low: Low impact on platform and business.
+  Decisions at this level can be made within the TDA with the involved team(s). Other stakeholders are then informed.
+- medium: Minor adjustments to the platform or strategic decisions regarding specifications.
+  The approval of the product owner is requested and the decision is made jointly.
+- high: Decisions with a high impact on the business and IT.
+  Changes that have a high-cost implication or strategic impact, among other things.
+  These types of decisions require the decision to be made together with the leadership board.
 -->
 
 ---

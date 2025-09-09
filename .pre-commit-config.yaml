@@ -3,9 +3,9 @@
 
 repos:
   - repo: https://github.com/jackdewinter/pymarkdown
-    rev: v0.9.30
+    rev: v0.9.32
     hooks:
       - id: pymarkdown
         args:
-          - -d line-length,no-bare-urls,no-duplicate-heading,no-duplicate-header
+          - -d line-length,no-bare-urls,no-duplicate-heading,no-duplicate-header,no-hard-tabs,no-space-in-code
           - scan
