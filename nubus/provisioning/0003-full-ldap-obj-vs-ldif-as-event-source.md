@@ -1,6 +1,6 @@
 # Full LDAP object vs. LDIF as the source for UDM events in Nubus Provisioning
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
 - date: 2024-06-10

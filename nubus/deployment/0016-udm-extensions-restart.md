@@ -3,7 +3,7 @@
 
 ---
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
 - date: 2024-08-09

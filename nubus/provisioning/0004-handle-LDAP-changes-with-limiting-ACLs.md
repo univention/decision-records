@@ -1,6 +1,6 @@
 # How to handle LDAP changes executed with limiting LDAP ACLs
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
 - date: 2024-06-03

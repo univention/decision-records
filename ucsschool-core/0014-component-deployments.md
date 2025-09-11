@@ -3,7 +3,9 @@
 
 ---
 
-- status: accepted, supersedes [0006-ui-development-and-deplyoment.md](0006-ui-development-and-deplyoment.md)
+- status: accepted
+- supersedes: [0006-ui-development-and-deplyoment.md](0006-ui-development-and-deplyoment.md)
+- superseded by: -
 - date: 2023-07-17
 - deciders: UCS@school RAM subteam
 - consulted: PM
