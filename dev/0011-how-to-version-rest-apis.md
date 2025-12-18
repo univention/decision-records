@@ -3,11 +3,11 @@
 
 ---
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
-- date: {YYYY-MM-DD when the decision was last updated}
-- author: {contact or informed captain for this ADR}
+- date: 2025-12-18
+- author: @dtroeder
 - approval level: medium
 - coordinated with: teams maintaining UCS and N4K, software architect, product management
 - source: https://git.knut.univention.de/groups/univention/dev/internal/dev-issues/-/epics/15

@@ -3,15 +3,15 @@
 
 ---
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
-- date: {YYYY-MM-DD when the decision was last updated}
-- author: {contact or informed captain for this ADR}
+- date: 2025-12-18
+- author: @dtroeder
 - approval level: medium
 - coordinated with: teams maintaining UCS and N4K, software architect, product management
 - source: https://git.knut.univention.de/groups/univention/dev/internal/dev-issues/-/epics/15
-- related: [ADR 0002 - Versioning of APIs and artifacts](0002-versioning-of-apis-and-artifacts.md), [ADR 0010 - How to version HTTP based REST APIs](0010-how-to-version-rest-apis.md)
+- related: [ADR 0002 - Versioning of APIs and artifacts](0002-versioning-of-apis-and-artifacts.md), [ADR 0011 - How to version HTTP based REST APIs](0011-how-to-version-rest-apis.md)
 - scope: all Univention HTTP/REST APIs
 - resubmission: -
 
@@ -37,7 +37,7 @@ A [guideline in the Development Handbook](https://univention.gitpages.knut.unive
 extends this ADR with more variants and examples.
 
 _If_ a breaking change to the schema or behavior of an API is required,
-[ADR 0010 - How to version HTTP-based REST APIs](0010-how-to-version-rest-apis.md)
+[ADR 0011 - How to version HTTP-based REST APIs](0011-how-to-version-rest-apis.md)
 defines how developers should handle versioning and deprecation.
 
 ## Decision Drivers
