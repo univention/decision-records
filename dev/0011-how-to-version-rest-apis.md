@@ -217,19 +217,6 @@ Use all available deprecation communication mechanisms to inform API client auth
 - Set an HTTP header (RFC 9745).
 - Set the `deprecated` flag in the OpenAPI specification.
 
-### Risks
-
-<!-- It's OK to repeat points from the above "Cons of the Options". -->
-<!-- Maybe use "Risk storming" to identify risks. -->
-
-- When implementing the decision, a {small, medium, high} risk exists, that {…}.
-- …
-
-### Confirmation
-
-{Describe how the implementation of/compliance with the ADR is confirmed. E.g., by a review or an ArchUnit test.
- Although we classify this element as optional, it is included in most ADRs.}
-
 ## More Information
 
 - [REST Misconceptions Part 6 - Versioning and Hypermedia](https://t-code.pl/blog/2016/03/rest-misconceptions-6/)
