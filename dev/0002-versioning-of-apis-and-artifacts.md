@@ -88,7 +88,7 @@ Versioning of APIs and artifacts serves multiple goals in all stages of its life
     immediately following the patch version.
   - Build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers
     immediately following the patch or pre-release version.
-- **UCS Debian package versioning** ([dev-handbook](https://univention.gitpages.knut.univention.de/internal/dev-handbook/packages/build.html#version-number-scheme)): `A.B.C-D`
+- **UCS Debian package versioning** ([dev-handbook](https://univention.gitpages.knut.univention.de/dev/internal/dev-handbook/packages/build.html#version-number-scheme)): `A.B.C-D`
   - A: For every minor and major release of UCS, increment this number `A`. Reset `B` and `C` to `0` and
     `D` to `1`.
   - B: This number `B` is always `0` for UCS releases. Only increment it for customer specific
@@ -145,7 +145,7 @@ Rationale:
   - SemVer is used for pure-Python, pure-shell and configuration-only Univention Debian packages.
     Customer specific modifications ("forks") are supported using "apt pinning", instead of limiting the
     use of the `MINOR`/`B` version component. The rule for `B` is not applied. See the proof of concept
-    evaluation [apt-pinning.md in the research-library](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/personal/dtroeder/apt-pinning.md).
+    evaluation [apt-pinning.md in the research-library](https://git.knut.univention.de/univention/dev/internal/research-library/-/blob/main/personal/dtroeder/apt-pinning.md).
 - "SemVer with extension" (for UCS Debian packages with release specific build-time dependencies) is
   SemVer with two additions: The rules of "UCS Debian package versioning" for `A` and `C` are _added_ to
   the rules for `MAJOR` and `MINOR`:
@@ -186,7 +186,7 @@ Rationale:
     customer forks.
     Those mechanisms are less transparent than the current one. They will probably also require some sort
     of pre-update test before minor and major UCS upgrades, to prevent blockages.
-    A [proof of concept](https://git.knut.univention.de/univention/internal/research-library/-/blob/main/personal/dtroeder/apt-pinning.md) shows how to
+    A [proof of concept](https://git.knut.univention.de/univention/dev/internal/research-library/-/blob/main/personal/dtroeder/apt-pinning.md) shows how to
     implement this.
 - "SemVer with extension" for UCS Debian packages build-time dependencies (C sources):
   - Good, because it conveys the same meaning as regular SemVer _during_ a UCS release cycle.
@@ -336,4 +336,4 @@ possible using software like `Dependabot`, `Renovate` etc.
 ### Apt Pinning
 
 There is a proof of concept with copy and pastable commands for using apt-pinning available at
-https://git.knut.univention.de/univention/internal/research-library/-/blob/main/personal/dtroeder/apt-pinning.md
+https://git.knut.univention.de/univention/dev/internal/research-library/-/blob/main/personal/dtroeder/apt-pinning.md
