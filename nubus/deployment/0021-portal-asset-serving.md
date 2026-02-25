@@ -2,7 +2,7 @@
 
 ---
 
-- status: draft
+- status: accepted
 - date: 2026-02-9
 - author: @jlohmer
 - approval level: medium
