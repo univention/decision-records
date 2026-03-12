@@ -1,33 +1,18 @@
-
 # {short title of solved problem and solution}
-
----
 
 - status: {draft | submitted to TDA | accepted | rejected}
 - supersedes: { - | [ADR-0004](0004-example.md)}
 - superseded by: { - | [ADR-0005](0005-example.md)}
 - date: {YYYY-MM-DD when the decision was last updated}
 - author: {contact or informed captain for this ADR}
-- approval level: {low | medium | high} <!-- (see explanation below) -->
+- approval level: {low | medium | high} (see [approval_level.md](approval_level.md))
 - coordinated with: {list everyone involved in the decision and whose opinions were sought (e.g. subject-matter experts)}
 - source: {(link to) ticket / epic / issue that lead to the creation of this ADR}
 - scope: { - | ADR is only valid {until date | until event | as a workaround until better solution … exists}
              | in project … | in product … (defaults to the directory this ADR is stored in)}
 - resubmission: { - | YYYY-MM-DD if the scope is time-limited}
 
-<!--
-Explanation "approval level"
-
-- low: Low impact on platform and business.
-  Decisions at this level can be made within the TDA with the involved team(s). Other stakeholders are then informed.
-- medium: Minor adjustments to the platform or strategic decisions regarding specifications.
-  The approval of the product owner is requested and the decision is made jointly.
-- high: Decisions with a high impact on the business and IT.
-  Changes that have a high-cost implication or strategic impact, among other things.
-  These types of decisions require the decision to be made together with the leadership board.
--->
-
----
+[[_TOC_]]
 
 ## Context and Problem Statement
 
