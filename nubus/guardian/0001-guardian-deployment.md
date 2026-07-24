@@ -7,6 +7,7 @@
 - deciders: UCS@school RAM subteam
 - consulted: PM
 - informed: UCS@school team, PM
+- superseded by: [nubus/guardian/0006-switch-pdp-from-opa-to-cerbos.md](./0006-switch-pdp-from-opa-to-cerbos.md)
 
 ---
 

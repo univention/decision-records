@@ -12,6 +12,7 @@
 - scope: ADR is only valid in the first release of the guardian as a first implementation, until a better
   and more permanent solution was designed, to supersede this ADR.
 - resubmission: Until 2023-12-31
+- superseded by: [nubus/guardian/0006-switch-pdp-from-opa-to-cerbos.md](./0006-switch-pdp-from-opa-to-cerbos.md)
 
 <!--
 Explanation "approval level"

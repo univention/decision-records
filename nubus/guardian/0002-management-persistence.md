@@ -8,6 +8,7 @@
 - deciders: J Leadbetter, Johannes Koeniger, Ole Schwiegert
 - consulted: UCS@school Dev Team
 - informed: UCS@school Dev Team
+- superseded by: [nubus/guardian/0006-switch-pdp-from-opa-to-cerbos.md](./0006-switch-pdp-from-opa-to-cerbos.md)
 
 ---
 

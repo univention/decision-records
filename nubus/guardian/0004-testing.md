@@ -4,7 +4,7 @@
 
 - Status: Accepted
 - Supersedes: -
-- Superseded by: -
+- Superseded by: [nubus/guardian/0006-switch-pdp-from-opa-to-cerbos.md](./0006-switch-pdp-from-opa-to-cerbos.md)
 - Date: 2023-10-19
 - Author: UCS@school Team
 - Approval level:
