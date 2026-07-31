@@ -1,6 +1,6 @@
 # Adopt the Univention Design System as the UI component library for UCS@school User Management
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
 - date: 2026-07-03

@@ -1,6 +1,6 @@
 # Move to HTMX-based server rendering for the UCS@school User Management UI
 
-- status: draft
+- status: accepted
 - supersedes: -
 - superseded by: -
 - date: 2026-07-03
