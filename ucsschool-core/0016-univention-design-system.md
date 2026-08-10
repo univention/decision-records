@@ -6,7 +6,7 @@
 - date: 2026-07-03
 - author: @oschwieg
 - approval level: medium (see [approval_level.md](../approval_level.md))
-- coordinated with: ByteBenders (feedback gathered, supportive); approved by SW architect, approval pending from PM.
+- coordinated with: ByteBenders (feedback gathered, supportive); approved by SW architect, approved by Michael Repke (PM).
 - source: Proposal email "Two changes to how we build and maintain web UIs" (2026-07-03)
 - scope: UCS@school User Management UI only. Adoption beyond that — by other UCS@school
   components or by other Univention products — is explicitly **not** decided here; it is
