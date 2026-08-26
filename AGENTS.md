@@ -19,6 +19,14 @@ or unreleased commercial information into a record.
 Internal decisions belong in the private
 `univention/internal/decision-records` repository.
 
+Exception: `git.knut.univention.de`, and project paths under it, may be named.
+Neither the host nor the group structure is a secret,
+and evidence drawn from a repository — a code search, a file reference, a commit —
+has to stay re-derivable by a reviewer, which needs the real path.
+Customer projects are the one part that stays out:
+paths under `univention/prof-services/customers/` name a customer,
+so report the number of affected projects instead of the path.
+
 ## Commands
 
 ```shell
@@ -124,10 +132,36 @@ Keep `[[_TOC_]]` directly below the metadata block; it is GitLab-specific.
 Reviewers in this repository consistently ask for the same structural fixes.
 Get these right the first time.
 
-- **Title** — the solved problem, optionally including the solution,
-  as a statement, not a topic label.
-  Good: "Rewrite the Guardian component by keeping only the PDP
+- **Title** — either the solved problem as a statement, optionally including the
+  solution, or a topic label. Both forms are allowed.
+  Good statement: "Rewrite the Guardian component by keeping only the PDP
   and switching to Cerbos".
+  Good topic label: "Tech stack: Python HTTP client library".
+  Prefer a statement when the decision has one clear outcome.
+  Prefer a topic label when the outcome has several parts that a statement would
+  either truncate or inflate into a paragraph — a `Tech stack: …` record that
+  picks different tools for different contexts is the usual case.
+  Whichever form you use, the title must be **precise enough to identify the record
+  on its own, and must not overlap another ADR's title**:
+  - List the existing titles before choosing one:
+    `grep -m1 -H '^# ' */*.md | sort -t: -k2`.
+    Take only each file's *first* `# ` line — a plain `grep '^# '` also matches
+    headings inside fenced code blocks, of which this repository has plenty.
+    Note that `no-duplicate-heading` is disabled in the lint config,
+    so nothing catches a collision for you.
+    Two records may legitimately share a title when one supersedes the other —
+    `dev/0006-log-format.md` and `dev/0010-log-format.md` are both "Log Format",
+    and there the repetition is the point.
+    For two *independent* records it is a defect.
+  - Disambiguate by naming the language, the side of the wire, or the layer.
+    "Python HTTP *client* library" and "Python REST API *server* framework"
+    are two records; "HTTP libraries" is neither.
+  - Watch for a topic that an existing record already decides part of.
+    A new "Python logging" record would collide with ADRs 0004-0010,
+    which already decide topology, levels, format and messages —
+    name what is actually being chosen, e.g. "Python logging library".
+  - Records that belong to a series share a prefix and keep the part after the
+    colon parallel in structure, so the set reads as one family and sorts together.
 - **Context and Problem Statement** — the situation and the question,
   including *how it came to be*.
   If a previous design is being replaced,
@@ -261,6 +295,116 @@ Before the merge request, review the draft against *What belongs in each
 section*: every considered option has a pros-and-cons subsection, the drivers
 carry no judgment and do not overlap, every option is argued against the same
 drivers, the metadata block is complete, and `pre-commit run -a` passes.
+
+## Load these skills before writing Markdown
+
+Before writing or editing any Markdown in this repository, load whichever of these
+skills your harness offers:
+
+- `remove-claudisms` - strips the words and structural habits that mark text as
+  AI-written.
+- `semantic-linebreaks` - the line-breaking convention described later in this
+  document.
+- `style-guide-wordlist` - Univention's per-term rulings, backed by
+  `docs/word-list.rst` and `docs/univention-terminology.rst`.
+- `univention-style-guide` - Univention's house style for documentation.
+
+Load them **first**, not after a draft exists: they change how the prose is written,
+and retrofitting them means rewriting work that was already reviewed.
+
+Where these skills disagree with each other, the Univention ones win:
+`style-guide-wordlist` and `univention-style-guide` outrank `remove-claudisms`
+on any term they cover.
+
+### When a skill is missing
+
+A missing skill is **not an error**. The skills live outside this repository and not
+every machine has them. Do the following:
+
+1. Write the ADR anyway. Never block on a missing skill, and never reconstruct one
+   from memory - a half-remembered word list is worse than none.
+2. Name the missing skills in your reply, and say which checks you could not run,
+   so the author knows what is unverified. "I could not check the draft against the
+   Univention word list" is useful; silence is not.
+3. Tell the author the missing skills are **recommended**, and **offer to install
+   them**. Do not install anything without being asked - it writes outside the
+   repository and into the author's home directory.
+
+### Installing the skills
+
+All four come from one repository,
+`git@git.knut.univention.de:univention/tooling/ai-workflows.git`.
+The documentation skills are under `skills/docs/`; other skills in that repository
+sit directly under `skills/`.
+
+Install on request, not on sight:
+
+1. **Look for an existing clone before cloning.** The path differs per machine, so
+   search for it instead of guessing a layout:
+
+   ```shell
+   find ~/git -type d -name .git -prune -o -type d -name ai-workflows -print
+   ```
+
+   Pruning `.git` matters: without it the search also returns
+   `.git/modules/…/ai-workflows` for any copy included as a submodule, and that path
+   is a bare git directory with no working tree, so a symlink into it is broken.
+
+   Prefer a **standalone clone** over a copy under `vendor/` or a submodule of another
+   project. A vendored copy is pinned to whatever revision that project last bumped,
+   and it need not carry every skill - on one machine the vendored copy was nine days
+   behind and shipped no `remove-claudisms` at all, so linking to it would have
+   silently dropped one of the four.
+
+   Clone only if no standalone clone exists, next to the author's other
+   repositories:
+
+   ```shell
+   git clone git@git.knut.univention.de:univention/tooling/ai-workflows.git \
+       ~/git/tooling/ai-workflows
+   ```
+
+2. Create both skill directories. Configure **Claude Code and OpenCode together**,
+   even when only one harness is in use, so the next session finds the skills
+   whichever harness starts:
+
+   ```shell
+   mkdir -p ~/.claude/skills ~/.config/opencode/skills
+   ```
+
+3. Symlink each skill into both directories, rather than copying, so that a
+   `git pull` in the clone updates every harness at once:
+
+   ```shell
+   REPO=~/git/tooling/ai-workflows
+   for skill in remove-claudisms semantic-linebreaks style-guide-wordlist \
+                univention-style-guide; do
+       ln -sfn "$REPO/skills/docs/$skill" ~/.claude/skills/"$skill"
+       ln -sfn "$REPO/skills/docs/$skill" ~/.config/opencode/skills/"$skill"
+   done
+   ```
+
+4. Load the newly installed skills in the running session and apply them to the
+   draft. Most harnesses pick up new skills without a restart; if yours does not,
+   say so and ask the author to restart it.
+
+Report what you installed and where the symlinks point, so the author can undo it
+with `rm` on the links alone.
+
+## Spelling: American English, not British English
+
+Write American English everywhere:
+prose, documentation, comments, identifiers, commit messages and chat.
+
+- `behavior`, not `behaviour`; `color`, not `colour`; `license`, not `licence`.
+- `-ize` / `-ization`, not `-ise` / `-isation`: `initialize`, `serialization`.
+- `-log`, not `-logue`: `catalog`, `dialog`.
+- Keep the British form when it is already fixed by the surrounding text,
+  an existing identifier, or a third-party API: `HttpResponse.colour_scheme`
+  stays as spelled.
+
+Older records in this repository predate the rule and are not to be rewritten for it;
+apply it to the lines you are editing, as with Semantic Line Breaks.
 
 ## Prose style: Semantic Line Breaks
 
