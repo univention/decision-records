@@ -25,6 +25,11 @@ To do a full-text search in this repository, open the left menu panel and click 
 - For new ADRs, please use [`adr-template.md`](adr-template.md) as basis.
 - We are implementing ADR in the form of [Markdown Any Decision Records (MADR)](https://adr.github.io/madr/).
 - Please use Markdown files and a format that renders well in Gitlab: [CommonMark](https://commonmark.org/help/) or [GitLab Flavored Markdown](https://docs.gitlab.com/ee/user/markdown.html).
+- Not required, but good practice: use [Semantic Line Breaks](https://sembr.org/) (SemBr, one sentence or clause per line).
+  It keeps diffs small, which makes ADRs much easier to review comment-by-comment.
+  - When using an AI agent,
+    install [this skill](https://git.knut.univention.de/univention/tooling/ai-workflows/-/tree/main/skills#semantic-linebreaks),
+    so it'll automatically format Markdown using SemBr.
 - A well established process for adding an ADR is:
   - Create a branch.
   - Copy the [template](adr-template.md).
