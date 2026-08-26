@@ -1,10 +1,12 @@
 # Nubus authorization engine
 
+> Before being moved and renamed, this file was: `iam/0001-authorization-engine.md`.
+
 ---
 
 - status: accepted
 - supersedes: -
-- superseded by: [nubus/guardian/0001-switch-pdp-from-opa-to-cerbos.md](../nubus/guardian/0001-switch-pdp-from-opa-to-cerbos.md)
+- superseded by: [nubus/guardian/0006-switch-pdp-from-opa-to-cerbos.md](./0006-switch-pdp-from-opa-to-cerbos.md)
 - date: 2026-01-21
 - author: @dtroeder
 - approval level: high <!-- (see explanation below) -->
