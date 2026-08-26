@@ -3,7 +3,7 @@
 
 ---
 
-- status: accepted
+- status: superseded
 - date: 2023-08-29
 - deciders: J Leadbetter, Johannes Koeniger, Ole Schwiegert
 - consulted: UCS@school Dev Team

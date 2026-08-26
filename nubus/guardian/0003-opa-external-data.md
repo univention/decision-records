@@ -3,7 +3,7 @@
 
 ---
 
-- status: accepted
+- status: superseded
 - date: 2023-08-31
 - author: Ole Schwiegert
 - approval level: low

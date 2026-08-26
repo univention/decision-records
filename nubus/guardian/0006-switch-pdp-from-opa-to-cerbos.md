@@ -1,6 +1,6 @@
 # Rewrite the Guardian component by keeping only the PDP and switching to Cerbos
 
-- status: final
+- status: accepted
 - supersedes: [nubus/guardian/0001-authorization-engine](./0000-authorization-engine.md), [nubus/guardian/0002-management-persistence](./0002-management-persistence.md), [nubus/guardian/0003-opa-external-data](./0003-opa-external-data.md), [nubus/guardian/0004-testing](./0004-testing.md), [nubus/guardian/0005-testing-frontend](./0005-testing-frontend.md)
 - superseded by: -
 - date: 2026-08-25

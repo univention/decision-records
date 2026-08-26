@@ -4,7 +4,7 @@
 
 ---
 
-- status: accepted
+- status: superseded
 - supersedes: -
 - superseded by: [nubus/guardian/0006-switch-pdp-from-opa-to-cerbos.md](./0006-switch-pdp-from-opa-to-cerbos.md)
 - date: 2026-01-21
