@@ -99,8 +99,7 @@ Fill in every field the template lists; use `-` for "not applicable".
 
 - **status** — in practice: `proposed` while under discussion,
   `accepted` once merged after the deadline,
-  `superseded` when replaced.
-  The template also names `draft`, `submitted to TDA`, and `rejected`.
+  `superseded` when replaced, or `rejected` if the ADR was rejected.
 - **approval level** — `low` | `medium` | `high`.
   **Ask the editor which level they want; never guess or silently default.**
   The three levels are defined in [`approval_level.md`](approval_level.md):

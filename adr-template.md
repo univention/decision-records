@@ -1,6 +1,6 @@
 # {short title of solved problem and solution}
 
-- status: {draft | submitted to TDA | accepted | rejected}
+- status: {proposed | accepted | rejected | superseded}
 - supersedes: { - | [ADR-0004](0004-example.md)}
 - superseded by: { - | [ADR-0005](0005-example.md)}
 - date: {YYYY-MM-DD when the decision was last updated}
