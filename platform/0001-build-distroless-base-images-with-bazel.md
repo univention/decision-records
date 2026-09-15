@@ -1,6 +1,6 @@
 # Build distroless base images from UCS sources with Bazel
 
-- status: proposed
+- status: accepted
 - supersedes: -
 - superseded by: -
 - date: 2026-08-28
@@ -259,8 +259,6 @@ PID 1 signal handling, probes without a shell, and the checks
 to run against a virtual environment before migrating a component.
 
 ## Decision Outcome
-
-> **Draft.** The author confirms or replaces this section.
 
 Chosen option: "Assemble the image with Bazel, `rules_distroless` and `rules_oci`",
 because it is the only option that satisfies the provenance driver
