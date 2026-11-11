@@ -1,8 +1,10 @@
 include:
   - project: univention/infrastructure/docker-services
     file:
-      - pre-commit.yml
+      - prek.yml
 
-run_pre_commit:
+pre_commit:
   cache: []
-  extends: .pre-commit
+  needs: []
+  extends: .prek
+  stage: test
